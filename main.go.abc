@@ -1,0 +1,568 @@
+package main
+
+//type Dog struct {
+//	Age *int `json:"",omitempty`
+//}
+//type Restaurant struct {
+//	NumberOfCustomers *int `json:",omitempty"`
+//}
+import (
+	"fmt"
+	"github.com/newrelic/go-agent/_integrations/nrgin/v1"
+	"github.com/newrelic/go-agent/v3/newrelic"
+	"os"
+
+	//"os"
+	"time"
+	//"go.uber.org/zap/zapcore"
+	"github.com/gin-gonic/gin"
+	//_ "starbucks/boot"
+	//"go.uber.org/zap"
+	//"github.com/mitchellh/mapstructure"
+	//"time"
+	//"github.com/newrelic/go-agent/v3/newrelic"
+)
+
+//type employee struct {
+//	name string
+//	age int
+//	salary int
+//}
+//func PrintAllNews(news chan string){
+//	for {
+//		select {
+//		case n := <- news:
+//			fmt.Println(n)
+//			//news = nil
+//			//close(news)
+//		case <-time.After(time.Second * 1):
+//			fmt.Println("Timeout: News feed finished")
+//			return
+//		}
+//	}
+//}
+//func newFeed(ch chan string)  {
+//	for i:=0; i< 5; i++ {
+//		time.Sleep(time.Millisecond * 500)
+//		ch <- fmt.Sprintf("News: %d", i+1)
+//	}
+//	//close(ch)
+//}
+//func execute(id int)  {
+//	fmt.Printf("id: %d\n", id)
+//}
+//
+//type sample struct {
+//	name string
+//	age int
+//	salary float64
+//}
+//func print(arr [5]int){
+//	fmt.Println(arr)
+//}
+//func findAndDelete(s []string, search string) []string{
+//	index := 0
+//	for _, item := range s {
+//		if search != item {
+//			s[index] = item
+//			index ++
+//		}
+//	}
+//	return s[:index]
+//}
+//func findAndDelArr (s [4]int, delItem int) []int {
+//	var new [4]int
+//	index :=0
+//	 for _, item := range s {
+//	 	if item != delItem {
+//	 		new[index] = item
+//	 		index++
+//		}
+//	 }
+//	 return new[:index]
+//}
+//func covert(i interface{}) {
+//	e := employee{}
+//	mapstructure.Decode(i, &e)
+//	fmt.Printf("%+v", e)
+//}
+//func HelloWord(w http.ResponseWriter, r *http.Request) {
+//	msgID := ""
+//	if m := r.Context().Value("msgId"); m != nil {
+//		if value, ok := m.(string); ok {
+//			msgID = value
+//		}
+//	}
+//	w.Header().Add("msgId", msgID)
+//	w.Write([]byte("hello, world"))
+//}
+//func injectMsgID(next http.Handler) http.Handler {
+//	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+//		msgID := uuid.New().String()
+//		ctx := context.WithValue(request.Context(), "msgId", msgID)
+//		req := request.WithContext(ctx)
+//		next.ServeHTTP(writer, req)
+//	})
+//}
+//func task(ctx context.Context) {
+//	i := 1
+//	for {
+//		select {
+//		case <-ctx.Done():
+//			fmt.Println("Gracefully exit")
+//			fmt.Println(ctx.Err())
+//			return
+//		default:
+//			fmt.Println(i)
+//			time.Sleep(time.Second * 1)
+//			i++
+//		}
+//	}
+//}
+//
+////仅发送 Only Send channel
+//func processWithOnlyWrite(ch chan<- int) {
+//
+//	ch <- 2
+//}
+
+//仅接收 Only receive channel
+//func processWithOnlyRead(ch <-chan int) {
+//	res := <-ch
+//	fmt.Println(res)
+//}
+//func generatePermutation(sampleRune []rune, left, right int) {
+//	//fmt.Printf("left=%d\t",left)
+//	//fmt.Printf("In generatePermutation(%s, %d, %d)\n", string(sampleRune),left,right)
+//	//fmt.Printf("In generatePermutation left=%d,and sampleRune=%s\n",left,string(sampleRune))
+//	if left == right {
+//		fmt.Printf("~~~%s~~~\n", string(sampleRune))
+//	} else {
+//		for i := left; i <= right; i++ {
+//			//sampleRune[]
+//			sampleRune[left], sampleRune[i] = sampleRune[i], sampleRune[left]
+//			generatePermutation(sampleRune, left+1, right)
+//			sampleRune[i], sampleRune[left] = sampleRune[left], sampleRune[i]
+//		}
+//	}
+//
+//	//if left == right {
+//	//	fmt.Println(string(sampleRune))
+//	//} else {
+//	//	for i := left; i < right; i++ {
+//	//		sampleRune[left], sampleRune[i] = sampleRune[i], sampleRune[left]
+//	//		generatePermutation(sampleRune, left+1, right)
+//	//		sampleRune[left], sampleRune[i] = sampleRune[i], sampleRune[left]
+//	//	}
+//	//}
+//
+//}
+//func myPow(x, n int) int {
+//	if n == 0 {
+//		return 1
+//	}
+//	if n%2 == 1 {
+//		return x * myPow(x, n-1)
+//	} else {
+//		return myPow(x*x, n/2)
+//	}
+//}
+//func myPow1(x, n int) int {
+//	pow := 1
+//	for n >= 1 {
+//		t := n & 1
+//		fmt.Printf("n=%d,t=%d\t", n, t)
+//		if t >= 1 {
+//			pow *= x
+//			fmt.Printf("pow=%d\t", pow)
+//		}
+//		x *= x
+//		fmt.Printf("x=%d\n", x)
+//		n >>= 1
+//	}
+//	return pow
+//}
+//func dfs(queue []rune, lenth, depth int, path []rune, used map[int]bool, res [][]rune)  {
+//	if depth == lenth {
+//		fmt.Println(string(path))
+//		res = append(res,path)
+//		return
+//	}
+//	for i:=0; i< lenth; i++ {
+//		if used[i] {
+//			continue
+//		}
+//		path=append(path,queue[i])
+//		used[i] = true
+//		dfs(queue,lenth, depth +1, path, used, res)
+//		path = path[:len(path)-1]
+//		used[i] = false
+//	}
+//}
+//var (
+//	lowerCharSet = "abcdefghijkmnpqrstuvwxyz"
+//	upperCherSet = "ABCDEFGHJKMNPQRSTUVWXYZ"
+//	specialCharSet = "!@#$%^&*"
+//	numberSet = "23456789"
+//	allCharSet = lowerCharSet + upperCherSet + numberSet + specialCharSet
+//)
+//
+//func gerneratePass(passlen,minSpecialChar, minNum, minUpper int) string {
+//var pass strings.Builder
+//
+//	for i:=0; i< minSpecialChar;i++ {
+//		r := rand.Intn(len(specialCharSet))
+//		pass.WriteString(string(specialCharSet[r]))
+//	}
+//	for i:=0; i< minNum;i++ {
+//		r := rand.Intn(len(numberSet))
+//		pass.WriteString(string(numberSet[r]))
+//	}
+//	for i:=0; i< minUpper;i++ {
+//		r := rand.Intn(len(upperCherSet))
+//		pass.WriteString(string(upperCherSet[r]))
+//	}
+//	remainLen := passlen - minSpecialChar - minNum - minUpper
+//	for i:=0; i< remainLen;i++ {
+//		r := rand.Intn(len(lowerCharSet))
+//		pass.WriteString(string(lowerCharSet[r]))
+//	}
+//	rune := []rune(pass.String())
+//	rand.Shuffle(len(rune), func(i, j int) {
+//		rune[i], rune[j]  = rune[j], rune[i]
+//	})
+//	return string(rune)
+//}
+//func getModulus() func(int) int {
+//	count:=0
+//	return func(x int) int {
+//		count =count +1
+//		if x < 0 {
+//			x = x* -1
+//		}
+//		return count
+//	}
+//}
+//func print(f func(int, int)int, a, b int) {
+//	fmt.Println(f(a, b))
+//}
+//func getAreafunc()func(int, int) int{
+//	return func(i int, i2 int) int{
+//		return i * i2
+//	}
+//}
+//func add(numbers ...int)int{
+//	sum:=0
+//	for _, num := range numbers {
+//		sum +=num
+//	}
+//	return sum
+//}
+//
+//type area func(int, int) int
+//
+//func getAreaFun() area {
+//	return func(i int, i2 int) int {
+//		return i * i2
+//	}
+//}
+//func witeToFile(text string) error {
+//	defer func() {
+//		fmt.Println("defer")
+//	}()
+//	file, err := os.Open("temp.txt")
+//
+//	if err != nil {
+//		return err
+//	}
+//	defer file.Close()
+//	n, err := file.WriteString(text)
+//	if err != nil {
+//		return err
+//	}
+//	fmt.Printf("Number of bytes written:%d\n",n)
+//
+//	return nil
+//}
+//func handleOutOfBounds()  {
+//	if r := recover(); r != nil {
+//		fmt.Println("reovering from panic:", r)
+//		//debug.PrintStack()
+//	}
+//}
+//func checkAndGet(a []int, index int) (int, error) {
+//	defer handleOutOfBounds()
+//	if index > (len(a) - 1) {
+//		//panic ("out of bound access for slice")
+//		panic (nil)
+//	}
+//	return a[index], nil
+//}
+
+var (
+	app newrelic.Application
+)
+type key int
+const   (
+	keyNrId key  = iota
+)
+func initNewRelic(){
+
+
+	app, err := newrelic.NewApplication(
+	newrelic.ConfigAppName("Starbucks"),
+	newrelic.ConfigLicense("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+	newrelic.ConfigDebugLogger(os.Stdout),
+		func(config *newrelic.Config) {
+			config.CustomInsightsEvents.Enabled = false
+		})
+	if err != nil {
+		panic("Failed to set NewRelic: " + err.Error())
+	}
+}
+func setNewRelicInContext() gin.HandlerFunc {
+
+}
+func main() {
+	initNewRelic()
+	r := gin.Default()
+	r.Use(nrgin.Middleware(app))
+	r.Use(setNewRelicInContext())
+	//app, err := newrelic.NewApplication(
+	//	newrelic.ConfigAppName("strbucks"),
+	//	newrelic.ConfigLicense("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+	//	newrelic.ConfigDebugLogger(os.Stdout),
+	//	func(config *newrelic.Config) {
+	//		config.CustomInsightsEvents.Enabled = true
+	//	},
+	//)
+	//if err != nil {
+	//	fmt.Println("unable to create new relic App", err)
+	//}
+	//a := []int{2,4}
+	//
+	//val, err := checkAndGet(a, 2)
+	//
+	////返回默认值
+	//fmt.Println(val)
+	//fmt.Println(err)
+	//
+	//areaF := getAreaFun()
+	//areaF(2,4)
+	//modlus := getModulus()
+	//fmt.Println(modlus(1))
+	//fmt.Println(modlus(1))
+	//fmt.Println(modlus(1))
+	//fmt.Println(modlus(1))
+	//fmt.Println(modlus(1))
+	//f := func() int {
+	//	return 2 * 2
+	//}()
+	////in := "abcdefghi"
+	////inRune := []rune(in)
+	//fmt.Println(f)
+	fmt.Println("===============")
+	//rand.Seed(time.Now().Unix())
+	//fmt.Println(5+ rand.Intn(20-4))
+	//fmt.Println(string(inRune[rand.Intn(len(inRune))]))
+
+	//minSpecialChar := 1
+	//minNum := 1
+	//minUpper := 1
+	//passlen := 8
+	//pass := gerneratePass(passlen,minSpecialChar, minNum, minUpper)
+	//fmt.Println(pass)
+	//rand.Seed(time.Now().Unix())
+
+	//fmt.Println(strconv.ParseFloat("1.3456", 32))
+	//fmt.Println(strconv.ParseBool("true"))
+	//fmt.Printf("%v, %v\n", true,true)
+	//numbers := "ae中了"
+	//for _,n := range numbers {
+	//	//fmt.Println(string(n))
+	//}
+	//fmt.Println(utf8.RuneCountInString(numbers))
+	//var load  suanfa.IWorkload
+	//load = &suanfa.Demo{}
+	//
+	//for i :=0; i< 5 ; i++ {
+	//	res := suanfa.Question1(load)
+	//	fmt.Println(res)
+	//}
+	//wg.Wait()
+	//
+	//res := myPow1(2, 10)
+	//fmt.Println(res)
+	//nums := []int{0,1,0,0,3,12}
+	//fmt.Println(nums)
+	//suanfa.MoveZeroes(nums)
+	//fmt.Println(nums)
+	//
+	//fmt.Println("=============")
+	//sample := "abc"
+	//queue := []rune(sample)var p question.IProducer
+	//	//p =  &question.ConcretProducer{}
+	//	//
+	//	//for i:=0; i< 1; i++{
+	//	//	question.Question2(p)
+	//	//}
+	//	//fmt.Println("main end")
+	//len := len(queue)
+	//res := make([][]rune, 1)
+	//if len == 0 {
+	//	return
+	//}
+	//used := make(map[int]bool)
+	//path := make([]rune,1)
+	//dfs(queue,len, 0, path, used, res)
+	//	fmt.Println(res)
+
+	//fmt.Println(string(sampleRune))
+	//generatePermutation(sampleRune,0, len(sampleRune)-1)
+	//ctx := context.Background()
+	//cancelCtx, cancelFunc := context.WithDeadline(ctx, time.Now().Add(time.Second * 5))
+	//defer cancelFunc()
+	//go task(cancelCtx)
+	//time.Sleep(time.Second * 6)
+	//ch := make(chan int, 2)
+	//ch <- 1
+	//ch <- 2
+	//close(ch)
+	//for val := range ch {
+	//	fmt.Printf("%d, %s", val, "vvv")
+	//}
+	//	var b *int
+	//	a := 2
+	//	b=&a
+	//	fmt.Println(b)
+	//	fmt.Println(*b)
+	//	*b = 10
+	//	fmt.Println(*b)
+	//	fmt.Println(a)
+	//	strconv.Atoi("1234")
+	//	multiline := `This is
+	//	a line
+	//strings
+	//`
+	//	fmt.Println(multiline)
+	//	r := strings.Compare("aa","bb")
+	//	strings.Contains("abc","ab")
+	//	strings.Split("ab$cd", "$")
+	//	strings.Fields("ab cd")
+	//	strings.Join([]string{"ab","cd"}, "-")
+	//	strings.HasPrefix("abcd", "ab")
+	//	strings.HasSuffix("abcde", "de")
+	//	//res := strings.ToLower("ABCDE")
+	//	//res1 := strings.ToUpper(res)
+	//	//fmt.Println(res)
+	//	//fmt.Println(res1)
+	//	res := strings.Title("this is a test semtence")
+	//	strings.TrimPrefix("testremoved", "test")
+	//	strings.TrimSuffix("testremoved", "test")
+	//	strings.TrimSpace(" test ")
+	//	res := strings.Index("abcdef","cfd")
+	//res1:= strings.Replace("abcdabef", "ab", "12", 1)
+	//res2 := strings.Replace("abcdabef", "ab", "12", -1)
+	//res := strings.LastIndex("abcdabef", "ab")
+	//
+	//fmt.Println(res)
+
+	//fmt.Println(res1)
+	//fmt.Println(res2)
+	//strings.ReplaceAll("This a a sample string", " ", "")
+	//HelloWordHandler := http.HandlerFunc(HelloWord)
+	//http.Handle("/welcome", injectMsgID(HelloWordHandler))
+	//http.ListenAndServe(":8080", nil)
+	//emp := employee{
+	//	name:   "Sam",
+	//	age:    10,
+	//	salary: 110,
+	//}
+	//covert(emp)
+
+	//fmt.Printf("%p\n", empP)
+	//fmt.Printf("%+v\n", empP)
+	//fmt.Printf("%+v\n", *empP)
+	//fmt.Printf("%#v\n", empP)
+	//fmt.Printf("%#v\n", *empP)
+	//letters := []string{"a","b","c","d","e","f"}
+	//len := len(letters)
+	//for i, j := 0, len; i < j; i, j = i+1, j-1 {
+	//	fmt.Println(letters[i])
+	//}
+	//fmt.Println("+++++++++++++++")
+	//s := &sample{
+	//	a: 1,
+	//	b: "test",
+	//}
+	//p := unsafe.Pointer(uintptr(unsafe.Pointer(s))  + unsafe.Offsetof(s.b))
+	//
+	//fmt.Println((*string)(p))
+	//fmt.Println(*(*string)(p))
+	//var a int8 = 2
+	//fmt.Printf("%d bytes\n", unsafe.Sizeof(a))
+	//fmt.Printf("Type is %s\n", reflect.TypeOf(a))
+
+	//logger := zap.NewExample()
+	//defer logger.Sync()
+	//
+	//const url = "http://example.com"
+	//
+	//fmt.Printf("%d", zapcore.DebugLevel)
+	//sugar := logger.Sugar()
+	//sugar.Infow("Failed to fetch URL.", "url", url, "attempt", 3, "backoff", time.Second)
+	//sugar.Infof("Failed to tetch URL: %s", url)
+
+	//if age < 18 {
+	//	fmt.Println("kid")
+	//} else if age >= 18 && age < 40 {
+	//	fmt.Println("Young")
+	//} else {
+	//	fmt.Println("Old")
+	//}
+
+	//engine := gin.New()
+
+	//d1 := Restaurant{}
+	//b, _ := json.Marshal(d1)
+	//fmt.Println(string(b))
+	////Prints: {}
+	//
+	//n := 0
+	//d2 := Restaurant{
+	//	NumberOfCustomers: &n,
+	//}
+	//b, _ = json.Marshal(d2)
+	//fmt.Println(string(b))
+	//
+	//fmt.Println("hello")
+
+	// Initialize a new detective instance
+	//d := detective.New("Another application")
+	//
+	//// Create a dependency, and register its detector function
+	//d.Dependency("cache").Detect(func() error {
+	//	err := cache.Ping()
+	//	return err
+	//})
+	//
+	//// Create an HTTP endpoint for health checks
+	//http.ListenAndServe(":8081", d)
+
+	//var greeting interface{} = "42"
+	//greetingStr, ok := greeting.(string)
+	//
+	//fmt.Println(ok)
+	//fmt.Println(greetingStr)
+	//
+	//greeting = []byte("hello world")
+	//greetingStr = string(greetingStr)
+	//fmt.Println(greeting)
+	//fmt.Println(greetingStr)
+	//p := factory.NewPerson("Lily", 28)
+	//p.Greet()
+	//factory.SomeAnimal()
+	//
+	//return
+
+}

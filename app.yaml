@@ -1,0 +1,8 @@
+env: "development"
+
+server:
+  port: ":15000"
+  app_key: "fb18f02d39cb182a"
+  app_secret: "fb18f02d39cb182a"
+  expire_in: 604800
+  app_name: "com.bjbt.fclean"

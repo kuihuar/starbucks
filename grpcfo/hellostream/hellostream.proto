@@ -1,0 +1,15 @@
+syntax = "proto3";
+package hellostream;
+option go_package = "./";
+service HelloStream {
+    rpc GetStream(ReqData) returns (stream RepData){}
+    rpc SetStream(stream ReqData) returns (RepData){}
+    rpc AllStream(stream ReqData) returns (stream RepData){}
+}
+message ReqData {
+    string data = 1;
+}
+
+message RepData {
+    string data = 1;
+}

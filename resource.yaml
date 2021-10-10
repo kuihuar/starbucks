@@ -1,0 +1,50 @@
+mysql:
+  biz1:
+    service:  biz1
+    database: biz1db
+    addr: 127.0.0.1:3306
+    user: "root"
+    password: "password"
+    maxidleconns: 50
+    maxopenconns: 2000
+    connMaxLifeTime: 3600s
+    ConnTimeOut: 1500ms
+    writeTimeOut: 3s
+    readTimeOut: 3s
+  biz2:
+    service: biz2
+      database: biz2db
+      addr: 127.0.0.1:3306
+      user: "root"
+      password: "password"
+      maxidleconns: 50
+      maxopenconns: 2000
+      connMaxLifeTime: 3600s
+      ConnTimeOut: 1500ms
+      writeTimeOut: 3s
+      readTimeOut: 3s
+redis:
+  redis1:
+    service: redis1
+    addr: 127.0.0.1:6379
+    user: "usrer"
+    password: "pass"
+    maxIdle: 10
+    maxActive: 1000
+    idleTimeout: 5m
+    connTimeOut: 1200ms
+    readTimeout: 1200ms
+    writeTimeout: 1200ms
+    maxconnLifetime: 10m
+  redis2:
+    service: redis2
+      addr: 127.0.0.1:6380
+      user: "usrer"
+      password: "pass"
+      maxIdle: 10
+      maxActive: 1000
+      idleTimeout: 5m
+      connTimeOut: 1200ms
+      readTimeout: 1200ms
+      writeTimeout: 1200ms
+      maxconnLifetime: 10m
