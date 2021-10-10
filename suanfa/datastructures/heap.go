@@ -33,12 +33,16 @@ func (m *minheap) rightchild(index int) int {
 	return 2 * index +2
 }
 func (m *minheap) insert(item int) error {
-	if m.size >= m.maxsize {
+	if m.size > m.maxsize {
 		return fmt.Errorf("heap is full")
+	}else if m.size == m.maxsize{
+		m.heapArray[0] = item
+		m.downHeapify(0)
+	}else if m.size < m.maxsize{
+		m.heapArray = append(m.heapArray, item)
+		m.size++
+		m.upHeapify(m.size - 1)
 	}
-	m.heapArray = append(m.heapArray, item)
-	m.size++
-	m.upHeapify(m.size - 1)
 	return nil
 }
 func (m *minheap)swap(first, second int)  {
@@ -104,5 +108,15 @@ func TestMinheap(){
 func (m *minheap) print() {
 	for _ ,val := range m.heapArray {
 		fmt.Println(val)
+	}
+}
+
+func TopN(arr []int, n int)  {
+	heap := newMinHeap(n)
+	for i:=0; i< len(arr);i++{
+		heap.insert(arr[i])
+	}
+	for i:=0; i<n;i++{
+		fmt.Println(heap.remove())
 	}
 }
