@@ -43,17 +43,17 @@ func quickSort(data []int, low, hight int)  {
 
 
 func partition(data []int, low, hight int)  int {
-	pivot := hight
-	less := low
+	pivot := data[hight]
+	pivotIndex := low
 	//great := low
-	for great := low;great <= hight-1;great++{ // hight-1 ,hight 位置就是 pivot
-		if data[great] < data[pivot] {
-			data[less], data[great] = data[great], data[less]
-			less++
+	for index := low;index <= hight-1;index++{ // hight-1 ,hight 位置就是 pivot
+		if data[index] < pivot {
+			data[pivotIndex], data[index] = data[index], data[pivotIndex]
+			pivotIndex++
 		}
 	}
-	data[less],data[hight]= data[hight],data[less]
-	return less
+	data[pivotIndex],data[hight]= data[hight],data[pivotIndex]
+	return pivotIndex
 }
 func partition1(data []int, low, hight int)  int {
 	pivot := hight
